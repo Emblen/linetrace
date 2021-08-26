@@ -86,20 +86,20 @@ void loop() {
       akicanget=3;
       stoprunning();
       can_GET();
-      //中央のセンサがライン上にくるまで左旋回
-      //今中央のセンサはライン上にあるので、とりあえず１秒間左旋回する
-      digitalWrite(PWM_r,HIGH);
-      analogWrite(PWM_l,HIGH);
+      //中央のセンサがライン上にくるまで右旋回
+      //今中央のセンサはライン上にあるので、とりあえず１秒間右旋回する
       digitalWrite(rpin,HIGH);
       digitalWrite(lpin,HIGH);
+      digitalWrite(PWM_r,HIGH);
+      analogWrite(PWM_l,std_PWM);
       delay(1000);
       while(true){
         int R = analogRead(2);
         if (R > threshold){
-          analogWrite(PWM_r,HIGH);
-          digitalWrite(PWM_l,HIGH);
           digitalWrite(rpin,HIGH);
           digitalWrite(lpin,HIGH);
+          analogWrite(PWM_r,std_PWM);
+          digitalWrite(PWM_l,HIGH);
           delay(200);
           break;
         }
@@ -121,12 +121,12 @@ void loop() {
 //関数たち
 
 
-//左に旋回
+//右に旋回
 void turn_right(){
-  digitalWrite(PWM_r,HIGH);
-  analogWrite(PWM_l,HIGH);
   digitalWrite(rpin,HIGH);
   digitalWrite(lpin,HIGH);
+  digitalWrite(PWM_r,HIGH);
+  analogWrite(PWM_l,std_PWM);
   delay(DELAY);
 }
 
@@ -182,10 +182,10 @@ void PID(){
   //DCモーター制御
   if(L<threshold && M<threshold && R<threshold){
     //コースアウトしたらバックする
-    analogWrite(PWM_r,250);
-    analogWrite(PWM_l,200);
     digitalWrite(rpin,LOW);
     digitalWrite(lpin,LOW);
+    analogWrite(PWM_r,250);
+    analogWrite(PWM_l,200);
     delay(300);
   }
   else{
